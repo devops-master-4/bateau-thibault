@@ -28,7 +28,7 @@ class Command(BaseCommand):
                 if serializer.is_valid():
                     serializer.save()
                     self.stdout.write(self.style.SUCCESS('['+time.ctime()+'] Successfully added product id="%s"' % product['id']))
-            if product['category']:
+            if product['category'] >= 0:
                 serializer = ProductOfCategorySerializer(data={'tigID':str(product['id']),'category':str(product['category'])})
                 if serializer.is_valid():
                     serializer.save()
