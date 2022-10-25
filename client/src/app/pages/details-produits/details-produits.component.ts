@@ -36,5 +36,23 @@ export class DetailsProduitsComponent implements OnInit {
     return this.product;
   }
 
+  addQuantity(product: Product) {
+    product.quantity_stock++;
+    console.log("quantité : ",product.quantity_stock);
+  }
+
+  removeQuantity(product: Product) {
+    if(product.quantity_stock > 0) {
+      product.quantity_stock--;
+    }
+    console.log("quantité : ",product.quantity_stock);
+  }
+
+  changePrice(product: Product) {
+    product.price = product.price + 10;
+    console.log("prix : ",product.price);
+  }
+
+
 
 }

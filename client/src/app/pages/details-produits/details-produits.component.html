@@ -1,12 +1,35 @@
-
 <div class="container">
   <div class="row">
     <div class="col-12 row" *ngFor="let product of listProduits">
-      <p class="col-3">nom : {{product.name}}</p>
-      <p class="col-3">id : {{product.id}}</p>
-      <p class="col-3">catégorie : {{product.category}}</p>
-      <p class="col-3">prix : {{product.price}}€/{{product.unit}} </p>
+      <p class="col-3">nom : {{ product.name }}</p>
+      <p class="col-3">id : {{ product.id }}</p>
+      <p class="col-3">catégorie : {{ product.category }}</p>
+      <p class="col-3">prix : {{ product.price }}€/{{ product.unit }}</p>
+      <p class="col-3">
+        prix de vente :
+        <input type="number" value="{{ product.price }}" min="0" />
+      </p>
+
+      <p class="col-3">Quantité solde : {{ product.quantity_sold }}</p>
+      <div style="display: flex; flex-direction: row">
+        <button class="btn btn-outline-dark" (click)="addQuantity(product)">
+          +
+        </button>
+
+        <p class="col-3 text-center">
+          Quantité stock : {{ product.quantity_stock }}
+        </p>
+        <button class="btn btn-outline-dark" (click)="removeQuantity(product)">
+          -
+        </button>
+      </div>
+      <hr />
     </div>
   </div>
-</div>
 
+  <form>
+    <button class="btn btn-primary" type="submit" >
+      Envoyer.
+    </button>
+  </form>
+</div>
