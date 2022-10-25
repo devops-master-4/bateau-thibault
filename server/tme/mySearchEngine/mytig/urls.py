@@ -14,8 +14,4 @@ urlpatterns = [
     #Available products
     path('availableproducts/', views.AvailableProductsList.as_view()),
     path('availableproduct/<int:pk>/', views.AvailableProductDetail.as_view()),
-    #product category
-    path('poissons/', views.AvailableProductsList.as_view()),
-    path('crustaces/', views.AvailableProductsList.as_view()),
-    path('coquillages/', views.AvailableProductsList.as_view()),
 ]
