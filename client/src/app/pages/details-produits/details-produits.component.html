@@ -1,12 +1,39 @@
 
+
+
 <div class="container">
-  <div class="row">
-    <div class="col-12 row" *ngFor="let product of listProduits">
+  <div class="row entete">
+    <div class="col-8">
+      <h3>{{categorieName}}</h3>
+    </div>
+    <div class="col-4 filtre">
+
+       <i class="bi bi-sliders"></i>
+       <select (change)="onChange($event)">
+         <option value="">Tout</option>
+         <option  value="0">Poisson</option>
+         <option  value="1">Coquillage</option>
+         <option  value="2">Crustacé</option>
+       </select>
+
+    </div>
+  </div>
+
+
+  <div class="row" *ngFor="let product of filtreProduct">
+    <div class="col-12 row">
       <p class="col-3">nom : {{product.name}}</p>
       <p class="col-3">id : {{product.id}}</p>
       <p class="col-3">catégorie : {{product.category}}</p>
       <p class="col-3">prix : {{product.price}}€/{{product.unit}} </p>
+      <p *ngIf="getPourcentageSold(product.price,product.price_on_sale)!=''" class="col-3">
+        {{getPourcentageSold(product.price,product.price_on_sale)!='' ? 'Promo '+
+        product.price_on_sale+'€ '+
+        getPourcentageSold(product.price,product.price_on_sale) :  '' }} </p>
+      <p class="col-3">stock  : {{product.quantity_stock}} </p>
+
     </div>
   </div>
 </div>
+
 

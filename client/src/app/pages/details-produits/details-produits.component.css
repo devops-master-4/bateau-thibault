@@ -1,0 +1,32 @@
+div .row:not(.col-12.row, .row.entete){
+  background-color: antiquewhite;
+  margin-bottom: 15px;
+  padding: 15px;
+}
+
+
+select{
+  width: 100%;
+  text-align: center;
+  border: none;
+  background-color: #404040;
+  font-size: 1.5rem;
+  color:white;
+}
+
+div .row.entete{
+  margin-top: 48px;
+  padding:15px;
+  background-color: #404040;
+  color: #fff;
+}
+
+.filtre{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+i{
+  font-size: 1.5rem;
+  color: white;
+}

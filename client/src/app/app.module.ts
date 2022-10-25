@@ -14,7 +14,6 @@ import {ProductService} from './services/product.service';
 import {HttpClientModule} from "@angular/common/http";
 
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +27,8 @@ import {HttpClientModule} from "@angular/common/http";
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    HttpClientModule
+    HttpClientModule,
+
   ],
   providers: [ProductService],
   bootstrap: [AppComponent]
