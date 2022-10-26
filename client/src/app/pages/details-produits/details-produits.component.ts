@@ -14,6 +14,7 @@ export class DetailsProduitsComponent implements OnInit {
   listProduits: Product[]=[];
   filtreProduct = this.listProduits;
   categorieName:string ='Tout les produits de la mer';
+  success:string ='';
 
 
   constructor(public productService : ProductService, private elRef:ElementRef, private http:HttpClient, private updateProductService: UpdateProductService) {}
@@ -72,8 +73,7 @@ export class DetailsProduitsComponent implements OnInit {
   }
 
   onChangeQuantity(product: Product,$event:any) {
-    let value:string = $event.target.value;
-      if(!value.match(/^[0-9]+$/)){
+      if(!this.checkErreurOnInput($event.target.value, $event.target.id)){
         $event.target.nextElementSibling.classList.remove('hide');
         setTimeout(() =>{
           $event.target.nextElementSibling.classList.add('hide');
@@ -82,9 +82,22 @@ export class DetailsProduitsComponent implements OnInit {
       }
   }
 
+  checkErreurOnInput(value:string, id:string) :boolean {
+    if(!value.match(/^[0-9]+$/)){
+      return false;
+    }
+    else if(id.includes('promotion')){
+      if(parseInt(value)> 100){
+        return false;
+      }
+    }
+    return true;
+  }
+
+
   onApplyPromo(product: Product,$event:any){
-    let value:string = $event.target.value;
-    if(!value.match(/^[0-9]+$/) || parseInt(value) > 100){
+
+    if(!this.checkErreurOnInput($event.target.value,$event.target.id)){
       $event.target.nextElementSibling.classList.remove('hide');
       setTimeout(() =>{
         $event.target.nextElementSibling.classList.add('hide');
@@ -148,7 +161,65 @@ export class DetailsProduitsComponent implements OnInit {
 
     //update stock quantity
 
-    this.updateProductService.update(data,'http://51.255.166.155:1352/tig/products/');
+    //this.updateProductService.update(data,'http://51.255.166.155:1352/tig/products/');
+
+  }
+
+  globalUpdate($event:any){
+
+    var arrayOfProducts:any= [];
+
+    this.listProduits.forEach(product => {
+        let selecteurVente = this.elRef.nativeElement.querySelector(`#vente${product.id}`);
+        let optionVente = this.getSelectedValue(selecteurVente);
+        let inputAjout = this.elRef.nativeElement.querySelector(`#ajout${product.id}`).value;
+        let inputRetrait = this.elRef.nativeElement.querySelector(`#retrait${product.id}`).value;
+        let inputPromotion = this.elRef.nativeElement.querySelector(`#promotion${product.id}`).value;
+
+        //invalid inputs return
+        if( !this.checkErreurOnInput(inputAjout, 'ajout') || !this.checkErreurOnInput(inputAjout, `retrait`)
+          || !this.checkErreurOnInput(inputAjout, 'promotion')){
+
+          $event.target.nextElementSibling.classList.remove('hide');
+          this.success='Erreur lors de la mise à jour';
+          setTimeout(() => {
+            $event.target.nextElementSibling.classList.add('hide');
+          }, 2000);
+          return;
+        }
+        else if(inputRetrait != 0 && optionVente == undefined){
+          return;
+        }
+
+        let perte =0;
+        let vente=0;
+        if(optionVente !=0){
+          vente = product.price_on_sale * inputRetrait;
+        }
+        else{
+          perte = product.price_on_sale * inputRetrait;
+        }
+
+        product.quantity_stock-=parseInt(inputRetrait);
+        product.quantity_stock += parseInt(inputAjout);
+        product.quantity_sold +=parseInt(inputRetrait);
+
+      if(inputAjout != 0 || inputAjout !=0 || inputPromotion !=0){
+        console.log('passe dans sauvegarder');
+        arrayOfProducts.push({
+          id: product.id,
+          quantity_stock : product.quantity_stock ,
+          quantity_sold :  product.quantity_sold ,
+          coutAchat: product.price * inputAjout,
+          quantite_vendu: vente,
+          quantite_perte : perte,
+          price_on_sale: (product.price_on_sale * (1-parseInt(inputPromotion)/100)).toFixed(2)
+        })
+      }
+
+      });
+
+      console.log(arrayOfProducts)
 
   }
 
