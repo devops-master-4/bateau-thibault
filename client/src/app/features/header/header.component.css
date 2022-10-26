@@ -1,5 +1,5 @@
 .header-dark {
-    padding:50px 0;
+    padding:30px 0;
     color:#f0f9ff;
     background-color:#282d32;
   }
@@ -9,7 +9,6 @@
     margin-bottom:12px;
     font-weight:bold;
     font-size:50px;
-    text-align: center;
   }
 
   .header-dark li {
@@ -17,4 +16,9 @@
     margin-bottom:12px;
     font-weight:bold;
     font-size:16px;
+  }
+
+  .image {
+    padding: 10px;
+    text-align: center;
   }
