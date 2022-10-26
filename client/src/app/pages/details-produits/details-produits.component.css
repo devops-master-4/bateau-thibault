@@ -4,6 +4,9 @@ div .row:not(.col-12.row, .row.entete){
   padding: 15px;
 }
 
+p:not(p.errorReason){
+  font-size: 1.5rem;
+}
 
 select{
   width: 100%;
@@ -29,4 +32,21 @@ div .row.entete{
 i{
   font-size: 1.5rem;
   color: white;
+}
+
+.motif select{
+  padding:0;
+  background-color: white;
+  color: black;
+}
+
+.hide{
+  display:none;
+}
+
+label{
+  margin-right: 24px;
+}
+input{
+width: 100%;
 }

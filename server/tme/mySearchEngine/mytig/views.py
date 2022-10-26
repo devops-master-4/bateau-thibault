@@ -2,6 +2,12 @@ import requests
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from mytig.config import baseUrl
+from mytig.models import ProduitEnPromotion
+from mytig.serializers import ProduitEnPromotionSerializer
+from mytig.models import AvailableProduct
+from mytig.serializers import AvailableProductSerializer
+from django.http import Http404
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -45,12 +51,7 @@ class RedirectionDetailProduit(APIView):
 
 
 
-from mytig.models import ProduitEnPromotion
-from mytig.serializers import ProduitEnPromotionSerializer
-from mytig.models import AvailableProduct
-from mytig.serializers import AvailableProductSerializer
-from django.http import Http404
-from django.http import JsonResponse
+
 
 class PromoList(APIView):
     def get(self, request, format=None):
@@ -105,15 +106,3 @@ class AvailableProductDetail(APIView):
         response = requests.get(baseUrl+'product/'+str(serializer.data['tigID'])+'/')
         jsondata = response.json()
         return Response(jsondata)
-    
- 
-class ProductListCategory(APIView):        
-    def get(self, request, cat, format=None):
-        res=[]
-        for prod in AvailableProduct.objects.filter(category=cat):
-            serializer = AvailableProductSerializer(prod)
-            response = requests.get(baseUrl+'product/'+str(serializer.data['tigID'])+'/')
-            jsondata = response.json()
-            res.append(jsondata)
-        return JsonResponse(res, safe=False)
-    

@@ -15,12 +15,3 @@ class AvailableProduct(models.Model):
 
     class Meta:
         ordering = ('tigID',)
-        
-        
-class ProductCategory(models.Model):
-    created = models.DateTimeField(auto_now_add=True)
-    tigID = models.IntegerField(default='-1')
-    category = models.StringField()
-
-    class Meta:
-        ordering = ('tigID',)

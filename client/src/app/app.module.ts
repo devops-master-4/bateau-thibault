@@ -12,6 +12,8 @@ import { DetailsProduitsComponent } from './pages/details-produits/details-produ
 import { DonneesHistoriqueComponent } from './pages/donnees-historique/donnees-historique.component';
 import {ProductService} from './services/product.service';
 import {HttpClientModule} from "@angular/common/http";
+import {FormsModule} from "@angular/forms";
+
 
 
 @NgModule({
@@ -28,6 +30,7 @@ import {HttpClientModule} from "@angular/common/http";
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    FormsModule,
 
   ],
   providers: [ProductService],
