@@ -13,8 +13,8 @@ class InfoProduct(models.Model):
     sale = models.BooleanField(default=False)
     discount = models.FloatField(default='0')
     comments = models.CharField(max_length=100, blank=True, default='')
-    quantityInStock = models.IntegerField(default='0')
-    quantitySell = models.IntegerField(default='0')
+    quantity_stock = models.IntegerField(default='0')
+    quantity_sold = models.IntegerField(default='0')
     sellPrice = models.FloatField(default='0')
     userId = models.CharField(max_length=200, blank=True,default=' ')
     
