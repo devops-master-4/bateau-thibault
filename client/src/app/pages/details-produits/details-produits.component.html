@@ -1,0 +1,91 @@
+<app-header></app-header>
+<div class="container">
+  <div class="row entete">
+    <div class="col-6">
+      <h3>{{categorieName}}</h3>
+    </div>
+
+    <div class="col-4 filtre">
+
+       <i class="bi bi-sliders"></i>
+       <select (change)="onChange($event)">
+         <option value="">Tout</option>
+         <option  value="0">Poisson</option>
+         <option  value="1">Coquillage</option>
+         <option  value="2">Crustacé</option>
+       </select>
+
+    </div>
+  </div>
+
+
+  <div class="row" *ngFor="let product of filtreProduct">
+    <div class="col-12 row">
+      <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">nom : {{product.name}}</p>
+      <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">catégorie : {{product.category}}</p>
+      <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">prix : {{product.price}}€/{{product.unit}}
+        <!-- <input type="number" value="{{ product.price }}" (change)="changePrice(product,$event)" min="0" /> -->
+      </p>
+      <p *ngIf="getPourcentageSold(product.price,product.price_on_sale)!=''" class="col-md-3 col-lg-3 col-s-12 col-sm-12">
+        {{getPourcentageSold(product.price,product.price_on_sale)!='' ? 'Promo '+
+        product.price_on_sale+'€ '+
+        getPourcentageSold(product.price,product.price_on_sale) :  '' }}
+      </p>
+      <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">stock  : {{product.quantity_stock}} </p>
+      <!--
+      <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">Quantité solde : {{ product.quantity_sold }}</p>
+      <div style="display: flex; flex-direction: row">
+        <button class="btn btn-outline-dark" (click)="addQuantity(product)">
+          +
+        </button>
+
+        <p class="col-md-3 col-lg-3 col-s-12 col-sm-12 text-center">
+          Quantité stock : {{ product.quantity_stock }}
+        </p>
+        <button class="btn btn-outline-dark" (click)="removeQuantity(product)">
+          -
+        </button>
+      </div>
+      -->
+
+
+        <div class="col-12 row">
+          <div  class="col-md-3 col-lg-3 col-s-12 col-sm-12">
+            <label>ajouter produit</label>
+            <input type="number" id="ajout{{product.id}}" (change)="onChangeQuantity(product,$event)"  value="0" min="0">
+            <p class="errorReason hide" style="color: red">Error valeur négative</p>
+            <input type="hidden"  value="{{product.price}}" >
+          </div>
+          <div class="col-md-3 col-lg-3 col-s-12 col-sm-12">
+            <label>retirer produit</label>
+            <input type="number" id="retrait{{product.id}}" (change)="onChangeQuantity(product,$event)" value="0" min="0">
+            <p class="errorReason hide" style="color: red">Error valeur négative</p>
+          </div>
+
+          <div class="col-md-3 col-lg-3 col-s-12 col-sm-12 motif">
+            <label>Motif du retrait</label>
+            <select id="vente{{product.id}}">
+              <option value=""></option>
+              <option value="{{product.price_on_sale}}">Vente</option>
+              <option value="0">Peremption</option>
+            </select>
+            <p class="errorReason hide" style="color: red">Selectionner une raison du retrait</p>
+          </div>
+
+          <div class="col-md-3 col-lg-3 col-s-12 col-sm-12">
+            <label>appliquer promotion</label>
+            <input type="number" id="promotion{{product.id}}" (change)="onApplyPromo(product,$event)" value="0" min="0">
+            <p class="errorReason hide" style="color: red">Error valeur incorrecte</p>
+          </div>
+        </div>
+
+        <div class="col-12 text-left pt-3">
+          <button class="btn btn-primary" (click)="updateProduct(product)" >Sauvegarder</button>
+        </div>
+
+
+
+      </div>
+    </div>
+</div>
+
