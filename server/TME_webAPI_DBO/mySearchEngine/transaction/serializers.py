@@ -14,6 +14,7 @@ class InfotransactionSerializer(ModelSerializer):
             'quantity',
             'stock',
             'userId',
-            'price', 
+            'buyPrice', 
+            'sellPrice',
             'sale',
         )
