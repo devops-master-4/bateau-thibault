@@ -66,3 +66,4 @@ server/TME_webAPI_DBO/mySearchEngine/mytig/migrations/__pycache__/0005_productof
 server/TME_webAPI_DBO/mySearchEngine/mytig/migrations/__pycache__/0006_productofcategory_category.cpython-38.pyc
 client/package-lock.json
 client/package-lock.json
+__pycache__/
