@@ -1,7 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Django env
-/myTidyVEnv
+myTidyVEnv/
 
 # Compiled output
 /dist
@@ -47,3 +47,23 @@ Thumbs.db
 
 # config files
 *.env
+server/TME_webAPI_DBO/mySearchEngine/mySearchEngine/__pycache__/settings.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mySearchEngine/__pycache__/urls.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mySearchEngine/__pycache__/wsgi.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mytig/__pycache__/admin.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mytig/__pycache__/apps.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mytig/__pycache__/config.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mytig/__pycache__/models.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mytig/__pycache__/serializers.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mytig/__pycache__/urls.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mytig/__pycache__/views.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mytig/migrations/__pycache__/__init__.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mytig/migrations/__pycache__/0001_initial.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mytig/migrations/__pycache__/0002_availableproducts_delete_availableproduct.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mytig/migrations/__pycache__/0003_delete_availableproducts.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mytig/migrations/__pycache__/0004_availableproducts.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mytig/migrations/__pycache__/0005_productofcategory.cpython-38.pyc
+server/TME_webAPI_DBO/mySearchEngine/mytig/migrations/__pycache__/0006_productofcategory_category.cpython-38.pyc
+client/package-lock.json
+client/package-lock.json
+__pycache__/
