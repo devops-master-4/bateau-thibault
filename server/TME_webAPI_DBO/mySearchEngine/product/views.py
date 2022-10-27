@@ -1,3 +1,4 @@
+from asyncio import constants
 import json
 import re
 import time
@@ -45,6 +46,25 @@ class UpdateProduct(APIView):
         else:
             return Response('Error')
         return Response('Succes')
+
+class GlobalUpdateProduct(APIView):
+    def post(self, request, format=None):
+        jsonData = request.data
+        print(jsonData)
+        error = []
+        for product in jsonData:
+            serializer = serializeProduct(product)
+            lineBefore = InfoProduct.objects.get(tig_id=product['id'])
+            lineBefore.delete()
+            if serializer.is_valid():
+                lineBefore = serializer
+                lineBefore.save()
+            else:
+                error.append("Error on "+str(product['id']))
+        if len(error) > 0:
+            return Response('Issue on some product -> ',error)
+        else:
+            return Response('Succes')
  
 class getAvailableProduct(APIView):
     def get(self,request,format=None):
