@@ -65,8 +65,9 @@ export class DetailsProduitsComponent implements OnInit {
   }
 
   changePrice(product: Product, $event: any) {
+    console.log('changePrice',product.sellPrice);
     if(product.sellPrice >= product.price){
-      if($event.target.class.includes('plus')){
+      if($event.target.getAttribute('class').includes('plus')){
         product.sellPrice++;
       }
       else{

@@ -31,9 +31,9 @@
       <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">catégorie : {{product.category}}</p>
       <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">achat : {{product.price}}€/{{product.unit}}</p>
       <div  class="col-md-3 col-lg-3 col-s-12 col-sm-12 adjustPrice" >
-        <span><i class="bi bi-plus-circle-fill plus" (change)="changePrice(product,$event)"></i></span>
+        <span><i class="bi bi-plus-circle-fill plus" (click)="changePrice(product,$event)"></i></span>
         <span id="price_on_sale">vente {{(product.sellPrice).toFixed(2)}}€</span>
-        <span><i class="bi bi-dash-circle-fill minus" (change)="changePrice(product,$event)"></i></span>
+        <span><i class="bi bi-dash-circle-fill minus" (click)="changePrice(product,$event)"></i></span>
       </div>
       <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">stock  : {{product.quantity_stock}} </p>
       <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">promotion  : {{product.discount}}% </p>
