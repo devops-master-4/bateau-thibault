@@ -5,7 +5,7 @@ class InfoTransaction(models.Model):
     tig_id = models.IntegerField(default='-1')    
     type = models.IntegerField(default='0')    
     name = models.CharField(max_length=100, blank=True, default='')  
-    date = models.DateTimeField(max_length=100, blank=True, default='')     
+    date = models.DateTimeField(auto_now_add=True, blank=True)     
     category = models.IntegerField(default='-1')     
     price = models.FloatField(default='0')     
     sale = models.BooleanField(default=False)     
