@@ -17,7 +17,7 @@ class LoginView(APIView):
         
             payload = {
                 'id': 1,
-                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=6000000),
                 'iat': datetime.datetime.utcnow()
                 }
             token = jwt.encode(payload, 'secret', algorithm='HS256')
@@ -32,8 +32,9 @@ class LoginView(APIView):
         
 
 class isConnected(APIView):
-    def get(self, request):
-        token = request.COOKIES.get('auth-token')
+    def post(self, request):
+        #get headers with bearer token        
+        token = request.data['token']
         if not token:
             raise AuthenticationFailed('Unauthenticated')
         try :
