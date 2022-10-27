@@ -1,13 +1,23 @@
-<ul class="nav nav-tabs">
-  <li class="nav-item">
-    <a [ngClass]="isActive ? 'nav-link active' : 'nav-link'" (click)="goTo('home')"   aria-current="page">home</a>
-  </li>
+<div class="header-dark">
+  <div class="text-center">
+    <h1 class="header-dark h1 font-italic">Plateforme de gestion de poissonnerie</h1>
+  </div>
+    <ul id="navbar" class="nav nav-tabs navigation-bar">
+      <li>
+        <a [ngClass]="isActive ? 'nav-link active' : 'nav-link'" (click)="goTo('home')" aria-current="page">Accueil</a>
+      </li>
 
-  <li class="nav-item">
-    <a [ngClass]="isActive ? 'nav-link active' : 'nav-link'" (click)="goTo('detailsProduit')"   aria-current="page">détails produit</a>
-  </li>
-
-  <li class="nav-item">
-    <a [ngClass]="isActive ? 'nav-link active' : 'nav-link'" (click)="goTo('donnesHistorique')"   aria-current="page">données à historique</a>
-  </li>
-</ul>
+      <li class="nav-item">
+        <a [ngClass]="isActive ? 'nav-link active' : 'nav-link'" (click)="goTo('detailsProduit')"
+          aria-current="page">Détails produits</a>
+      </li>
+      <li class="nav-item">
+        <a [ngClass]="isActive ? 'nav-link active' : 'nav-link'" (click)="goTo('donnesHistorique')"
+          aria-current="page">Données à historique</a>
+      </li>
+      <li class="nav-item">
+        <a [ngClass]="isActive ? 'nav-link active' : 'nav-link'" (click)="goTo('login')"
+          aria-current="page">Déconnexion</a>
+      </li>
+    </ul>
+</div>

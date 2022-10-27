@@ -12,8 +12,7 @@ import { DetailsProduitsComponent } from './pages/details-produits/details-produ
 import { DonneesHistoriqueComponent } from './pages/donnees-historique/donnees-historique.component';
 import {ProductService} from './services/product.service';
 import {HttpClientModule} from "@angular/common/http";
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -30,7 +29,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    NgbModule
+    FormsModule,
+
   ],
   providers: [ProductService],
   bootstrap: [AppComponent]

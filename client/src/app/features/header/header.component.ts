@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NavigationExtras, Router} from "@angular/router";
+import {NavigationExtras, Router, NavigationEnd} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -8,16 +8,18 @@ import {NavigationExtras, Router} from "@angular/router";
 })
 export class HeaderComponent implements OnInit {
 
-
   isActive:boolean = false;
 
-  constructor(private router:Router) {}
-  ngOnInit() {
+  constructor(private router:Router) {
+
+    
+  }
+    ngOnInit() {
 
   }
 
   goTo(pageName: string): void {
-    this.router.navigate(['/' + pageName])
+    this.router.navigate(['/' + pageName]);
   }
 
 

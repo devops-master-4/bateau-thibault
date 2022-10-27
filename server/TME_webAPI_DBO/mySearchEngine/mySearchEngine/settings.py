@@ -27,8 +27,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+<<<<<<< HEAD
 CORS_ORIGIN_ALLOW_ALL = True
 
+=======
+CORS_ALLOWED_ORIGINS = [
+   'http://localhost:4200'
+]
+>>>>>>> master
 
 # Application definition
 
