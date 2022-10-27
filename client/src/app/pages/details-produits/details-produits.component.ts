@@ -66,14 +66,14 @@ export class DetailsProduitsComponent implements OnInit {
 
   changePrice(product: Product, $event: any) {
     console.log('changePrice',product.sellPrice);
-    if(product.sellPrice >= product.price){
+
       if($event.target.getAttribute('class').includes('plus')){
-        product.sellPrice++;
+        product.sellPrice+=0.5;
       }
       else{
-        product.sellPrice--;
+        product.sellPrice-=0.5;
       }
-    }
+      if(product.sellPrice <= product.price){product.sellPrice = product.price; }
   }
 
   onChangeQuantity(product: Product,$event:any) {
@@ -98,7 +98,6 @@ export class DetailsProduitsComponent implements OnInit {
     return true;
   }
 
-
   onApplyPromo(product: Product,$event:any){
 
     if(!this.checkErreurOnInput($event.target.value,$event.target.id)){
@@ -122,15 +121,15 @@ export class DetailsProduitsComponent implements OnInit {
   }
 
   updateProduct(product: Product, $event:any) {
+    var typeTransaction:number |string = 0;
 
     const selecteurVente = this.elRef.nativeElement.querySelector(`#vente${product.id}`);
     let optionVente = this.getSelectedValue(selecteurVente);
 
     let inputAjout = this.elRef.nativeElement.querySelector(`#ajout${product.id}`).value;
-    let inputRetrait = this.elRef.nativeElement.querySelector(`#retrait${product.id}`).value;
     let inputPromotion = this.elRef.nativeElement.querySelector(`#promotion${product.id}`).value;
 
-    if (inputRetrait > 0 && optionVente == undefined) {
+    if (inputAjout >0 && optionVente == undefined) {
       selecteurVente.nextElementSibling.classList.remove('hide');
 
       setTimeout(() => {
@@ -140,29 +139,27 @@ export class DetailsProduitsComponent implements OnInit {
       return;
     }
 
-    //check if all input equals 0 or promotion >0 return void
-    if ((parseInt(inputAjout) == 0 && parseInt(inputRetrait) == 0 && (parseInt(inputPromotion) == 0 || parseInt(inputPromotion) > 100))) {
-      return;
-    }
+  switch(optionVente) {
+    case 0:
+      typeTransaction = 0;
+      product.quantity_stock -= parseInt(inputAjout)
+      break;
+      case 1:
+        typeTransaction = 1;
+        product.quantity_stock += parseInt(inputAjout)
+        break;
+    case 2 :
+      typeTransaction = 2;
+      product.quantity_stock -= parseInt(inputAjout)
+      break;
 
+    default:
+      typeTransaction = "";
+  }
 
-    product.quantity_stock -= parseInt(inputRetrait);
-    product.quantity_stock += parseInt(inputAjout);
-
-    if(parseInt(inputPromotion) !=0){
+    if(inputPromotion !=='' && product.sellPrice>product.price){
       product.discount = parseInt(inputPromotion);
     }
-
-    if (product.quantity_sold != 0) {
-      product.quantity_sold += parseInt(inputRetrait);
-    }
-    if (product.quantity_stock <= 0) {
-      product.quantity_stock = 0;
-    }
-
-
-  //const data:Product= product;
-
 
     const data = {
       id:product.tig_id,
@@ -177,7 +174,9 @@ export class DetailsProduitsComponent implements OnInit {
       quantity_stock:product.quantity_stock,
       quantity_sold:product.quantity_sold,
       sellPrice:product.sellPrice,
-      userId:product.userId
+      typeTransaction:typeTransaction,
+      userId:product.userId,
+      inputQuantity: parseInt(inputAjout)
     }
 
     //update stock quantity
@@ -195,7 +194,7 @@ export class DetailsProduitsComponent implements OnInit {
 
        setTimeout(() =>{
          $event.target.nextElementSibling.classList.add('hide');
-         window.location.href =  window.location.href;
+         //window.location.href =  window.location.href;
        },1000)
     },
     error =>{
