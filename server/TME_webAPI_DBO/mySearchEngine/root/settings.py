@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'mytig.apps.MytigConfig',
     'product.apps.ProductConfig',
     'account.apps.AccountConfig',
+    'transaction.apps.TransactionConfig',
     "corsheaders",
 ]
 
