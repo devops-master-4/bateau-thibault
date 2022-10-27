@@ -1,3 +1,59 @@
+
+.spinner{
+  background-color:rgba(0,0,0, 0.1);
+  width:100%;
+  position: fixed;
+  height:100%;
+  top:0;
+  left:0;
+  z-index:1;
+  display:flex;
+  justify-content:center;
+  padding: 250px 0;
+
+}
+.spinner div{
+  display: inline-flex; height: 200px; width: 300px; justify-content: center; align-items: center;
+}
+
+.spinner i{
+  font-size:15rem;
+  animation-name: spin;
+  animation-duration: 4000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+}
+
+@-ms-keyframes spin {
+  from {
+    -ms-transform: rotate(0deg);
+  } to {
+      -ms-transform: rotate(360deg);
+    }
+}
+@-moz-keyframes spin {
+  from {
+    -moz-transform: rotate(0deg);
+  } to {
+      -moz-transform: rotate(360deg);
+    }
+}
+@-webkit-keyframes spin {
+  from {
+    -webkit-transform: rotate(0deg);
+  } to {
+      -webkit-transform: rotate(360deg);
+    }
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  } to {
+      transform: rotate(360deg);
+    }
+}
+
 div .row:not(.col-12.row, .row.entete){
   background-color: antiquewhite;
   margin-bottom: 15px;
@@ -64,4 +120,5 @@ width: 100%;
 .adjustPrice span:last-child >i{
   color: red;
 }
+
 
