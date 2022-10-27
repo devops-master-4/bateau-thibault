@@ -3,7 +3,7 @@ export interface Product {
   category: number;
   id:number;
   price:number;
-  price_on_sale:number;
+  sellPrice:number;
   discount:number;
   sale:boolean
   owner:string;
