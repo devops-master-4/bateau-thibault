@@ -22,5 +22,11 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/' + pageName]);
   }
 
+  logout() {
+
+    this.router.navigate(['login/']);
+    localStorage.removeItem('token');
+  }
+
 
 }
