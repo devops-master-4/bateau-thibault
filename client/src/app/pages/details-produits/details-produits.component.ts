@@ -65,8 +65,9 @@ export class DetailsProduitsComponent implements OnInit {
   }
 
   changePrice(product: Product, $event: any) {
+    console.log('changePrice',product.sellPrice);
     if(product.sellPrice >= product.price){
-      if($event.target.class.includes('plus')){
+      if($event.target.getAttribute('class').includes('plus')){
         product.sellPrice++;
       }
       else{
@@ -183,7 +184,7 @@ export class DetailsProduitsComponent implements OnInit {
 
     this.updateProductService.update(data,'http://localhost:8000/updateProduct/').subscribe( res=> {
 
-       if(res==='Succes'){
+       if(res=='Succes'){
          this.responseRequest = 'Mis à jour avec succès';
        }
        else{
@@ -191,6 +192,7 @@ export class DetailsProduitsComponent implements OnInit {
        }
 
        $event.target.nextElementSibling.classList.remove('hide');
+
        setTimeout(() =>{
          $event.target.nextElementSibling.classList.add('hide');
          window.location.href =  window.location.href;
