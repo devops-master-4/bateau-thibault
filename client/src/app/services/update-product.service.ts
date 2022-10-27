@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Product} from "../interface/product";
+import { Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,21 +10,14 @@ export class UpdateProductService {
 
   constructor(private http:HttpClient) { }
 
-  update(data:object,url:string):void {
+  update(data:object,url:string):Observable<string> {
 
     const options = {
       headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json'
       }
     };
 
-    this.http.post<any>(url, JSON.stringify(data), options).subscribe( res=> {
-        (t: any) => console.info(JSON.stringify(t))
-        console.log(res);
-      },
-      error =>{
-        console.log("erreur : ",error)
-      });
+    return this.http.post<any>(url, JSON.stringify(data), options);
   }
 }

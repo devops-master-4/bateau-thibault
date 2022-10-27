@@ -1,4 +1,5 @@
 export interface Product {
+  tig_id:number;
   comments : string;
   category: number;
   id:number;
@@ -11,4 +12,5 @@ export interface Product {
   name:string;
   quantity_stock:number;
   quantity_sold:number;
+  userId:string;
 }

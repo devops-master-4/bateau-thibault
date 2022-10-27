@@ -12,6 +12,7 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   getProductsFromJson():Observable<Product[]>{
-    return this.http.get<Product[]>("http://localhost:8000/products/available/")
+    return this.http.get<Product[]>("http://localhost:8000/listProduct/")
+    // bouchon url : ../../assets/data/Products_bouchon.json
   }
 }

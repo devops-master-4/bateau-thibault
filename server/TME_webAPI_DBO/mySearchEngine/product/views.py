@@ -25,7 +25,7 @@ def serializeProduct(product):
         'unit' : product['unit'],
         'sale': product['sale'],
         'discount' : product['discount'],
-        'comments' : product['comments'],
+        'comments' : ' ',
         'quantity_stock' : product['quantity_stock'],
         'quantity_sold' : product['quantity_sold'],
         'sellPrice' : product['sellPrice'],
@@ -35,6 +35,7 @@ def serializeProduct(product):
 class UpdateProduct(APIView):
     def post(self, request, format=None):
         jsonData = request.data
+        print(jsonData)
         serializer = serializeProduct(jsonData)
         lineBefore = InfoProduct.objects.get(tig_id=jsonData['id'])
         lineBefore.delete()
