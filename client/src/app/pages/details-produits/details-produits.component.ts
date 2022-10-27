@@ -1,7 +1,9 @@
 import {Component, ElementRef, Input, OnInit} from '@angular/core';
 import {Product} from "../../interface/product";
 import {ProductService} from "../../services/product.service";
-
+import {HttpClient } from "@angular/common/http";
+import { HttpHeaders } from '@angular/common/http';
+import {UpdateProductService} from "../../services/update-product.service";
 @Component({
   selector: 'app-details-produits',
   templateUrl: './details-produits.component.html',
@@ -12,11 +14,9 @@ export class DetailsProduitsComponent implements OnInit {
   listProduits: Product[]=[];
   filtreProduct = this.listProduits;
   categorieName:string ='Tout les produits de la mer';
-  price_on_sold:string = '';
 
 
-
-  constructor(public productService : ProductService, private elRef:ElementRef) {}
+  constructor(public productService : ProductService, private elRef:ElementRef, private http:HttpClient, private updateProductService: UpdateProductService) {}
 
   ngOnInit(): void {
     this.getAllProduits();
@@ -33,9 +33,6 @@ export class DetailsProduitsComponent implements OnInit {
 
   }
 
-  getProduit(id: number) {
-
-  }
 
   getPourcentageSold(prix:number, price_sold:number):string {
     if(price_sold === prix){
@@ -69,18 +66,6 @@ export class DetailsProduitsComponent implements OnInit {
     }
   }
 
-  /*addQuantity(product: Product) {
-    product.quantity_stock++;
-    console.log("quantité : ",product.quantity_stock);
-  }*/
-
-  removeQuantity(product: Product) {
-    if(product.quantity_stock > 0) {
-      product.quantity_stock--;
-    }
-    //console.log("quantité : ",product.quantity_stock);
-  }
-
   changePrice(product: Product, $event: any) {
     product.price = $event.target.value;
     console.log("prix : ",product.price);
@@ -96,8 +81,6 @@ export class DetailsProduitsComponent implements OnInit {
         return;
       }
   }
-
-
 
   onApplyPromo(product: Product,$event:any){
     let value:string = $event.target.value;
@@ -130,37 +113,42 @@ export class DetailsProduitsComponent implements OnInit {
     let inputRetrait = this.elRef.nativeElement.querySelector(`#retrait${product.id}`).value;
     let inputPromotion = this.elRef.nativeElement.querySelector(`#promotion${product.id}`).value;
 
-    if(inputRetrait >0 && optionVente == undefined){
+    if (inputRetrait > 0 && optionVente == undefined) {
       selecteurVente.nextElementSibling.classList.remove('hide');
 
-      setTimeout(() =>{
+      setTimeout(() => {
         selecteurVente.nextElementSibling.classList.add('hide');
-      },2000);
+      }, 2000);
 
       return;
     }
 
     //check if all input equals 0 or promotion >0 return void
-    if((parseInt(inputAjout)==0 && parseInt(inputRetrait)==0 && (parseInt(inputPromotion)==0 || parseInt(inputPromotion)>100))){
+    if ((parseInt(inputAjout) == 0 && parseInt(inputRetrait) == 0 && (parseInt(inputPromotion) == 0 || parseInt(inputPromotion) > 100))) {
       return;
     }
 
 
-    product.quantity_stock -=parseInt(inputRetrait);
-    product.quantity_stock +=parseInt(inputAjout);
+    product.quantity_stock -= parseInt(inputRetrait);
+    product.quantity_stock += parseInt(inputAjout);
 
 
-
-    if(product.quantity_sold !=0){
+    if (product.quantity_sold != 0) {
       product.quantity_sold += parseInt(inputRetrait);
     }
-    if(product.quantity_stock  <=0){
-      product.quantity_stock  = 0;
+    if (product.quantity_stock <= 0) {
+      product.quantity_stock = 0;
     }
     console.log(product.quantity_stock);
-    //function to get attribute then send TO DO
 
+    //declare  data
+    const data = {
 
+    };
+
+    //update stock quantity
+
+    this.updateProductService.update(data,'http://51.255.166.155:1352/tig/products/');
 
   }
 
