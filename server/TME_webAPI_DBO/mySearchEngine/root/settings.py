@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'product.apps.ProductConfig',
     'account.apps.AccountConfig',
     'transaction.apps.TransactionConfig',
+    'BI.apps.BiConfig',
     "corsheaders",
 ]
 

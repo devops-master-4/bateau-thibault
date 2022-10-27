@@ -21,5 +21,6 @@ urlpatterns = [
     path('', include('mytig.urls')),
     path('', include('product.urls')),
     path('', include('account.urls')),
-    path('', include('transaction.urls'))
+    path('', include('transaction.urls')),
+    path('', include('BI.urls'))
 ]
