@@ -28,10 +28,10 @@ class Command(BaseCommand):
                 'sale': product['sale'],
                 'discount' : product['discount'],
                 'comments' : product['comments'],
-                'quantityInStock' : product['quantity_stock'],
-                'quantitySell' : product['quantity_sold'],
-                'sellPrice' : product['price_on_sale'],
-                'userId' : 'id'
+                'quantity_stock' : product['quantity_stock'],
+                'quantity_sold' : product['quantity_sold'],
+                'sellPrice' : product['price_on_sale']*1.35,
+                'userId' : 'admin'
             })
             if serializer.is_valid():
                 serializer.save()
