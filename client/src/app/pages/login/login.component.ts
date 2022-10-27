@@ -20,20 +20,19 @@ export class LoginComponent implements OnInit {
     const password = document.getElementById('inputPassword') as HTMLInputElement;
     console.log(email.value);
     console.log(password.value);
-    /*
     if(!email.value || !password.value){
       alert('Veuillez remplir tous les champs');
-    }
+    }/*
     else if(!emailRegex.test(email.value)){
       alert('Veuillez entrer une adresse mail valide')
     }
     else if(!passwordRegex.test(password.value)){
       alert('Votre mot de passe doit contenir au moins 8 caractères dont une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial.');
-    }
+    }*/
     else{
       //Si la connection est valide
       this.loginVerification(email.value, password.value);
-    }*/
+    }
   }
 
   loginVerification(email : string, password : string){

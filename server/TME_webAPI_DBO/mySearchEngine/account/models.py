@@ -1,10 +1,7 @@
 from django.db import models
 
-# class User(AbstractUser):
-#     name = models.CharField(max_length=255)
-#     email = models.CharField(max_length=255, unique=True)
-#     password = models.CharField(max_length=255)
-#     username = None
-
-#     USERNAME_FIELD = 'email'
-#     REQUIRED_FIELDS = []
+class User():
+    def __init__(self, id, email, password):
+        self.id = id
+        self.email = email
+        self.password = password
