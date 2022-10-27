@@ -27,3 +27,19 @@ class AddTransaction(APIView):
         else:
             return Response('Error')
         return Response('Succes')
+
+class AllTransaction(APIView):
+    def post(self, request, format=None):
+        jsonData = request.data
+        print(jsonData)
+        error = []
+        for transaction in jsonData:
+            serializer = serializeTransaction(transaction)
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                error.append("Error on "+str(transaction['id']))
+        if len(error) > 0:
+            return Response('Issue on some transaction -> ',error)
+        else:
+            return Response('Total Succes')
