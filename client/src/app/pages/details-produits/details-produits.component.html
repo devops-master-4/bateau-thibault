@@ -23,15 +23,16 @@
     <div class="col-12 row">
       <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">nom : {{product.name}}</p>
       <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">catégorie : {{product.category}}</p>
-      <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">prix : {{product.price}}€/{{product.unit}}
+      <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">achat : {{product.price}}€/{{product.unit}}
         <!-- <input type="number" value="{{ product.price }}" (change)="changePrice(product,$event)" min="0" /> -->
       </p>
-      <p *ngIf="getPourcentageSold(product.price,product.price_on_sale)!=''" class="col-md-3 col-lg-3 col-s-12 col-sm-12">
-        {{getPourcentageSold(product.price,product.price_on_sale)!='' ? 'Promo '+
-        product.price_on_sale+'€ '+
-        getPourcentageSold(product.price,product.price_on_sale) :  '' }}
-      </p>
+      <div  class="col-md-3 col-lg-3 col-s-12 col-sm-12 adjustPrice" >
+        <span><i class="bi bi-plus-circle-fill"></i></span>
+        <span id="price_on_sale">vente {{product.sellPrice}}€</span>
+        <span><i class="bi bi-dash-circle-fill"></i></span>
+      </div>
       <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">stock  : {{product.quantity_stock}} </p>
+      <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">solde  : {{product.sellPrice}} </p>
       <!--
       <p class="col-md-3 col-lg-3 col-s-12 col-sm-12">Quantité solde : {{ product.quantity_sold }}</p>
       <div style="display: flex; flex-direction: row">
@@ -66,7 +67,7 @@
             <label>Motif du retrait</label>
             <select id="vente{{product.id}}">
               <option value=""></option>
-              <option value="{{product.price_on_sale}}">Vente</option>
+              <option value="1">Vente</option>
               <option value="0">Peremption</option>
             </select>
             <p class="errorReason hide" style="color: red">Selectionner une raison du retrait</p>
@@ -87,5 +88,11 @@
 
       </div>
     </div>
+
+  <div class="col-12 text-left pt-3">
+    <button class="btn btn-primary" (click)="globalUpdate($event)" >Tout sauvegarder</button>
+    <p class="errorReason hide" style="color: red">{{success}}</p>
+  </div>
+
 </div>
 
