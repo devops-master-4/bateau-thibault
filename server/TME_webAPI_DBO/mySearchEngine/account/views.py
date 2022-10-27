@@ -20,7 +20,7 @@ class LoginView(APIView):
                 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
                 'iat': datetime.datetime.utcnow()
                 }
-            token = jwt.encode(payload, 'secret', algorithm='HS256')
+            token = jwt.encode(payload, 'CE_COURS_EST_NUL_A_CHIER', algorithm='HS256')
             response = Response()
             response.set_cookie(key='auth-token', value=token, httponly=True)
             response.data = {
@@ -37,7 +37,7 @@ class isConnected(APIView):
         if not token:
             raise AuthenticationFailed('Unauthenticated')
         try :
-            payload = jwt.decode(token, 'secret', algorithms=['HS256'])
+            payload = jwt.decode(token, 'CE_COURS_EST_NUL_A_CHIER', algorithms=['HS256'])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Unauthenticated')
         user = payload['id']
