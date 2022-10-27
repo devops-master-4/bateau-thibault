@@ -5,4 +5,5 @@ from product import views
 
 urlpatterns = [
     path('updateProduct/', views.UpdateProduct.as_view()),
+    path('productsList/', views.getAvailableProduct.as_view()),
 ]
