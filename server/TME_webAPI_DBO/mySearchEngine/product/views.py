@@ -11,13 +11,8 @@ from django.http import HttpResponse
 
 class UpdateProduct(APIView):
     def post(self, request, format=None):
-        # response = requests.get(baseUrl+'shipPoints/')
-        # jsondata = response.json()
         print(request.data)
-        # body_unicode = request.body.decode('utf-8')
-        # body = json.loads(body_unicode)
-        # content = body['content']
-        # print(content)
+
         
         return Response('jsondata')
 
