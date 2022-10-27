@@ -16,6 +16,7 @@ export class DetailsProduitsComponent implements OnInit {
   categorieName:string ='Tout les produits de la mer';
   success:string ='';
   spinner:boolean = true;
+  responseRequest='';
 
 
   constructor(public productService : ProductService, private elRef:ElementRef, private http:HttpClient, private updateProductService: UpdateProductService) {
@@ -119,7 +120,7 @@ export class DetailsProduitsComponent implements OnInit {
 
   }
 
-  updateProduct(product: Product) {
+  updateProduct(product: Product, $event:any) {
 
     const selecteurVente = this.elRef.nativeElement.querySelector(`#vente${product.id}`);
     let optionVente = this.getSelectedValue(selecteurVente);
@@ -147,6 +148,9 @@ export class DetailsProduitsComponent implements OnInit {
     product.quantity_stock -= parseInt(inputRetrait);
     product.quantity_stock += parseInt(inputAjout);
 
+    if(parseInt(inputPromotion) !=0){
+      product.discount = parseInt(inputPromotion);
+    }
 
     if (product.quantity_sold != 0) {
       product.quantity_sold += parseInt(inputRetrait);
@@ -156,13 +160,45 @@ export class DetailsProduitsComponent implements OnInit {
     }
 
 
+  //const data:Product= product;
 
 
-    const data:Product = product;
+    const data = {
+      id:product.tig_id,
+      name:product.name,
+      category: product.category,
+      price:product.price,
+      unit:product.unit,
+      availability : product.availability,
+      sale: product.sale,
+      discount:product.discount,
+      comments : product.comments,
+      quantity_stock:product.quantity_stock,
+      quantity_sold:product.quantity_sold,
+      sellPrice:product.sellPrice,
+      userId:product.userId
+    }
 
     //update stock quantity
 
-    //this.updateProductService.update(data,'http://51.255.166.155:1352/tig/products/');
+    this.updateProductService.update(data,'http://localhost:8000/updateProduct/').subscribe( res=> {
+
+       if(res==='Succes'){
+         this.responseRequest = 'Mis à jour avec succès';
+       }
+       else{
+         this.responseRequest = 'Erreur lors de la mise jour';
+       }
+
+       $event.target.nextElementSibling.classList.remove('hide');
+       setTimeout(() =>{
+         $event.target.nextElementSibling.classList.add('hide');
+         window.location.href =  window.location.href;
+       },1000)
+    },
+    error =>{
+      console.log("erreur : ",error)
+    });;
 
   }
 
