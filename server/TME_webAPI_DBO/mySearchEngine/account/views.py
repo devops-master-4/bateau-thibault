@@ -46,7 +46,3 @@ class isConnected(APIView):
         })
 
 
-
-
-
-

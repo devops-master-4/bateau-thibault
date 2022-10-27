@@ -15,9 +15,11 @@ export class DetailsProduitsComponent implements OnInit {
   filtreProduct = this.listProduits;
   categorieName:string ='Tout les produits de la mer';
   success:string ='';
+  spinner:boolean = true;
 
 
-  constructor(public productService : ProductService, private elRef:ElementRef, private http:HttpClient, private updateProductService: UpdateProductService) {}
+  constructor(public productService : ProductService, private elRef:ElementRef, private http:HttpClient, private updateProductService: UpdateProductService) {
+  }
 
   ngOnInit(): void {
     this.getAllProduits();
@@ -28,19 +30,12 @@ export class DetailsProduitsComponent implements OnInit {
        this.listProduits = res;
         this.filtreProduct= this.listProduits;
         console.log(this.listProduits)
+        this.spinner=false;
     },
       (err) => {
         console.log(err);
       });
 
-  }
-
-
-  getPourcentageSold(prix:number, price_sold:number):string {
-    if(price_sold === prix){
-      return '';
-    }
-   return '( '+ Math.round((price_sold-prix)/price_sold * 100)+'%)';
   }
 
 
@@ -69,8 +64,14 @@ export class DetailsProduitsComponent implements OnInit {
   }
 
   changePrice(product: Product, $event: any) {
-    product.price = $event.target.value;
-    console.log("prix : ",product.price);
+    if(product.sellPrice >= product.price){
+      if($event.target.class.includes('plus')){
+        product.sellPrice++;
+      }
+      else{
+        product.sellPrice--;
+      }
+    }
   }
 
   onChangeQuantity(product: Product,$event:any) {
@@ -153,7 +154,8 @@ export class DetailsProduitsComponent implements OnInit {
     if (product.quantity_stock <= 0) {
       product.quantity_stock = 0;
     }
-    console.log(product.quantity_stock);
+
+
 
 
     const data:Product = product;
