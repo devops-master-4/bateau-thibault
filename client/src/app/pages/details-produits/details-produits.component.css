@@ -4,7 +4,7 @@ div .row:not(.col-12.row, .row.entete){
   padding: 15px;
 }
 
-p:not(p.errorReason){
+p:not(p.errorReason), #price_on_sale{
   font-size: 1.5rem;
 }
 
@@ -50,3 +50,18 @@ label{
 input{
 width: 100%;
 }
+.adjustPrice span{
+  padding:5px;
+}
+.adjustPrice i{
+  cursor:pointer;
+}
+.adjustPrice span:first-child >i{
+  color: green;
+
+}
+
+.adjustPrice span:last-child >i{
+  color: red;
+}
+
