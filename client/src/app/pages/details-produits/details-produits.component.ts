@@ -14,7 +14,7 @@ export class DetailsProduitsComponent implements OnInit {
   listProduits: Product[]=[];
   filtreProduct = this.listProduits;
   categorieName:string ='Tout les produits de la mer';
-  success:string ='';
+  messageGlobalUpdate:string ='';
   spinner:boolean = true;
   responseRequest='';
 
@@ -65,24 +65,21 @@ export class DetailsProduitsComponent implements OnInit {
   }
 
   changePrice(product: Product, $event: any) {
-    console.log('changePrice',product.sellPrice);
-
       if($event.target.getAttribute('class').includes('plus')){
         product.sellPrice+=0.5;
       }
       else{
         product.sellPrice-=0.5;
       }
-      if(product.sellPrice <= product.price){product.sellPrice = product.price; }
+
+      if((product.sellPrice * (1-product.discount/100)) <= product.price){
+        product.sellPrice = product.price;
+      }
   }
 
   onChangeQuantity(product: Product,$event:any) {
       if(!this.checkErreurOnInput($event.target.value, $event.target.id)){
-        $event.target.nextElementSibling.classList.remove('hide');
-        setTimeout(() =>{
-          $event.target.nextElementSibling.classList.add('hide');
-        },2000);
-        return;
+        this.toggleMessageError($event.target);
       }
   }
 
@@ -99,8 +96,7 @@ export class DetailsProduitsComponent implements OnInit {
   }
 
   onApplyPromo(product: Product,$event:any){
-
-    if(!this.checkErreurOnInput($event.target.value,$event.target.id)){
+    if(!this.checkErreurOnInput($event.target.value,'promotion')){
       $event.target.nextElementSibling.classList.remove('hide');
       setTimeout(() =>{
         $event.target.nextElementSibling.classList.add('hide');
@@ -109,56 +105,64 @@ export class DetailsProduitsComponent implements OnInit {
     }
   }
 
-  getSelectedValue(element:any):number | undefined {
-
+  getSelectedValue(element:any):number | string {
     var text = element.options[element.selectedIndex].value;
     if(text ===''){
-      return undefined;
+      return '';
     }
-
     return parseInt(text);
+  }
 
+  toggleMessageError(element:any):void {
+    element.nextElementSibling.classList.remove('hide');
+    setTimeout(() =>{
+      element.nextElementSibling.classList.add('hide');
+    },2000);
   }
 
   updateProduct(product: Product, $event:any) {
-    var typeTransaction:number |string = 0;
 
     const selecteurVente = this.elRef.nativeElement.querySelector(`#vente${product.id}`);
-    let optionVente = this.getSelectedValue(selecteurVente);
+    var typeTransaction:number |string =  this.getSelectedValue(selecteurVente);
 
-    let inputAjout = this.elRef.nativeElement.querySelector(`#ajout${product.id}`).value;
-    let inputPromotion = this.elRef.nativeElement.querySelector(`#promotion${product.id}`).value;
+    let inputAjout = this.elRef.nativeElement.querySelector(`#ajout${product.id}`);
+    let inputPromotion = this.elRef.nativeElement.querySelector(`#promotion${product.id}`);
 
-    if (inputAjout >0 && optionVente == undefined) {
-      selecteurVente.nextElementSibling.classList.remove('hide');
 
-      setTimeout(() => {
-        selecteurVente.nextElementSibling.classList.add('hide');
-      }, 2000);
-
+    if(product.quantity_stock <0){
+      this.toggleMessageError(inputAjout);
       return;
     }
 
-  switch(optionVente) {
-    case 0:
-      typeTransaction = 0;
-      product.quantity_stock -= parseInt(inputAjout)
-      break;
-      case 1:
-        typeTransaction = 1;
-        product.quantity_stock += parseInt(inputAjout)
+    if (parseInt(inputAjout.value) > 0 && typeTransaction ==='') {
+      this.toggleMessageError(selecteurVente)
+      return;
+    }
+    if(!this.checkErreurOnInput(inputAjout.value,'ajout')){
+      this.toggleMessageError(inputAjout);
+      return;
+    }
+
+
+    if(this.checkErreurOnInput(inputPromotion.value,'promotion')){
+      if( (product.sellPrice * (1-parseInt(inputPromotion.value)/100)) < product.price){
+        this.toggleMessageError($event.target);
+        this.responseRequest = 'Erreur promotion : le prix ne peut pas etre inférieur au prix d\'achat';
+        return;
+      }
+      product.discount = parseInt(inputPromotion.value);
+    }
+
+    switch(typeTransaction) {
+      case 0:
+        product.quantity_stock -= parseInt(inputAjout.value)
         break;
-    case 2 :
-      typeTransaction = 2;
-      product.quantity_stock -= parseInt(inputAjout)
-      break;
-
-    default:
-      typeTransaction = "";
-  }
-
-    if(inputPromotion !=='' && product.sellPrice>product.price){
-      product.discount = parseInt(inputPromotion);
+      case 1:
+        product.quantity_stock += parseInt(inputAjout.value)
+        break;
+      case 2 :
+        product.quantity_stock -= parseInt(inputAjout.value)
+        break;
     }
 
     const data = {
@@ -176,13 +180,12 @@ export class DetailsProduitsComponent implements OnInit {
       sellPrice:product.sellPrice,
       typeTransaction:typeTransaction,
       userId:product.userId,
-      inputQuantity: parseInt(inputAjout)
+      inputQuantity: parseInt(inputAjout.value)
     }
 
-    //update stock quantity
-
+    //update
     this.updateProductService.update(data,'http://localhost:8000/updateProduct/').subscribe( res=> {
-
+    console.log('sending data');
        if(res=='Succes'){
          this.responseRequest = 'Mis à jour avec succès';
        }
@@ -194,7 +197,8 @@ export class DetailsProduitsComponent implements OnInit {
 
        setTimeout(() =>{
          $event.target.nextElementSibling.classList.add('hide');
-         //window.location.href =  window.location.href;
+         this.spinner=true;
+         window.location.href =  window.location.href;
        },1000)
     },
     error =>{
@@ -208,56 +212,97 @@ export class DetailsProduitsComponent implements OnInit {
     var arrayOfProducts:any= [];
 
     this.listProduits.forEach(product => {
-        let selecteurVente = this.elRef.nativeElement.querySelector(`#vente${product.id}`);
-        let optionVente = this.getSelectedValue(selecteurVente);
-        let inputAjout = this.elRef.nativeElement.querySelector(`#ajout${product.id}`).value;
-        let inputRetrait = this.elRef.nativeElement.querySelector(`#retrait${product.id}`).value;
-        let inputPromotion = this.elRef.nativeElement.querySelector(`#promotion${product.id}`).value;
+      const selecteurVente = this.elRef.nativeElement.querySelector(`#vente${product.id}`);
+      var typeTransaction:number |string =  this.getSelectedValue(selecteurVente);
+
+      let inputAjout = this.elRef.nativeElement.querySelector(`#ajout${product.id}`);
+      let inputPromotion = this.elRef.nativeElement.querySelector(`#promotion${product.id}`);
 
         //invalid inputs return
-        if( !this.checkErreurOnInput(inputAjout, 'ajout') || !this.checkErreurOnInput(inputAjout, `retrait`)
-          || !this.checkErreurOnInput(inputAjout, 'promotion')){
-
-          $event.target.nextElementSibling.classList.remove('hide');
-          this.success='Erreur lors de la mise à jour';
-          setTimeout(() => {
-            $event.target.nextElementSibling.classList.add('hide');
-          }, 2000);
-          return;
-        }
-        else if(inputRetrait != 0 && optionVente == undefined){
+        if( !this.checkErreurOnInput(inputAjout.value, 'ajout') || !this.checkErreurOnInput(inputAjout.value, 'promotion')){
+          this.toggleMessageError($event.target);
+          this.messageGlobalUpdate = 'Erreur :  valeurs incorrects';
           return;
         }
 
-        let perte = undefined;
-        let vente = 0;
-        if(optionVente !=0){
-          vente = product.sellPrice * inputRetrait;
-        }
-        else{
-          perte = 0;
-        }
+      if(product.quantity_stock <0){
+        this.toggleMessageError(inputAjout);
+        setTimeout(() =>{
+          product.quantity_stock +=parseInt(inputAjout.value);
+        },2000)
+        return;
+      }
 
-        product.quantity_stock-=parseInt(inputRetrait);
-        product.quantity_stock += parseInt(inputAjout);
-        product.quantity_sold +=parseInt(inputRetrait);
+      if (parseInt(inputAjout.value) > 0 && typeTransaction ==='') {
+        this.toggleMessageError($event.target);
+        this.messageGlobalUpdate = 'Erreur :  le motif de modification de stock ne peut pas être vide';
+        return;
+      }
 
-      if(inputAjout != 0 || inputAjout !=0 || inputPromotion !=0){
-        console.log('passe dans sauvegarder');
+
+      if(this.checkErreurOnInput(inputPromotion.value,'promotion')){
+        if( (product.sellPrice * (1-parseInt(inputPromotion.value)/100)) < product.price){
+          this.toggleMessageError($event.target);
+          return;
+        }
+        product.discount = parseInt(inputPromotion.value);
+      }
+
+      switch(typeTransaction) {
+        case 0:
+          product.quantity_stock -= parseInt(inputAjout.value)
+          break;
+        case 1:
+          product.quantity_stock += parseInt(inputAjout.value)
+          break;
+        case 2 :
+          product.quantity_stock -= parseInt(inputAjout.value)
+          break;
+      }
+
         arrayOfProducts.push({
-          id: product.id,
+          id:product.tig_id,
+          name:product.name,
+          category: product.category,
+          price:product.price,
+          unit:product.unit,
+          availability : product.availability,
+          sale: product.sale,
+          discount:product.discount,
+          comments : product.comments,
           quantity_stock : product.quantity_stock ,
           quantity_sold :  product.quantity_sold ,
-          coutAchat: product.price * inputAjout,
-          quantite_vendu: vente,
-          quantite_perte : perte,
-          price_on_sale: (product.sellPrice * (1-parseInt(inputPromotion)/100)).toFixed(2)
+          sellPrice:product.sellPrice,
+          typeTransaction:typeTransaction,
+          userId:product.userId,
+          inputQuantity: parseInt(inputAjout.value)
         })
-      }
 
       });
 
-      console.log(arrayOfProducts)
+    //update
+    this.updateProductService.update(arrayOfProducts,'http://localhost:8000/updateMultipleProduct/').subscribe( res=> {
+        console.log('sending data');
+        if(res=='Succes'){
+          this.spinner=true;
+          setTimeout(() =>{
+            this.spinner=false;
+            this.messageGlobalUpdate = 'Mis à jour avec succès';
+            $event.target.nextElementSibling.classList.remove('hide');
+
+            setTimeout(() =>{
+              window.location.href =  window.location.href;
+            },1000)
+
+          },3000)
+        }
+        else{
+          this.messageGlobalUpdate = 'Erreur lors de la mise jour';
+        }
+      },
+      error =>{
+        console.log("erreur : ",error)
+      });;
 
   }
 

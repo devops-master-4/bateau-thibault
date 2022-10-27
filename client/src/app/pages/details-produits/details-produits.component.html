@@ -42,7 +42,7 @@
             <div  class="col-md-4 col-lg-4 col-s-12 col-sm-12">
               <label>modifier stock</label>
               <input type="number" id="ajout{{product.id}}" (change)="onChangeQuantity(product,$event)"  value="0" min="0">
-              <p class="errorReason hide" style="color: red">Erreur valeur négative</p>
+              <p class="errorReason hide" style="color: red">Erreur valeur incorrecte</p>
               <input type="hidden"  value="{{product.price}}" >
             </div>
 
@@ -76,7 +76,7 @@
 
     <div class="col-12 text-left pt-3">
       <button class="btn btn-primary" (click)="globalUpdate($event)" >Tout sauvegarder</button>
-      <p class="errorReason hide" style="color: red">{{success}}</p>
+      <p class="errorReason hide" [ngStyle]="{'color':messageGlobalUpdate.includes('succès')  ? 'green' : 'red' }">{{messageGlobalUpdate}}</p>
     </div>
 
   </div>
