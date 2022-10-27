@@ -122,6 +122,7 @@ export class DetailsProduitsComponent implements OnInit {
 
   updateProduct(product: Product, $event:any) {
     var typeTransaction:number |string = 0;
+    
 
     const selecteurVente = this.elRef.nativeElement.querySelector(`#vente${product.id}`);
     let optionVente = this.getSelectedValue(selecteurVente);
@@ -135,26 +136,26 @@ export class DetailsProduitsComponent implements OnInit {
       setTimeout(() => {
         selecteurVente.nextElementSibling.classList.add('hide');
       }, 2000);
-
+      
       return;
     }
 
   switch(optionVente) {
-    case 0:
-      typeTransaction = 0;
+    case 1:
+      typeTransaction = 1;
       product.quantity_stock -= parseInt(inputAjout)
       break;
-      case 1:
-        typeTransaction = 1;
+      case 2:
+        typeTransaction = 2;
         product.quantity_stock += parseInt(inputAjout)
         break;
-    case 2 :
-      typeTransaction = 2;
+    case 3 :
+      typeTransaction = 3;
       product.quantity_stock -= parseInt(inputAjout)
       break;
 
     default:
-      typeTransaction = "";
+      typeTransaction = 0;
   }
 
     if(inputPromotion !=='' && product.sellPrice>product.price){
@@ -179,8 +180,9 @@ export class DetailsProduitsComponent implements OnInit {
       inputQuantity: parseInt(inputAjout)
     }
 
-    //update stock quantity
+    console.log(data);
 
+    //update stock quantity
     this.updateProductService.update(data,'http://localhost:8000/updateProduct/').subscribe( res=> {
 
        if(res=='Succes'){

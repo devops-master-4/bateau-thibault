@@ -9,12 +9,13 @@ from mytig.config import baseUrl
 from django.http import HttpResponse
 from product.models import InfoProduct
 from product.serializers import InfoProductSerializer
+from transaction.serializers import InfotransactionSerializer
 # Create your views here.
 from django.http import JsonResponse
 #ShipPoints
 from django.core import serializers
 from django.forms.models import model_to_dict
-
+from enum import Enum
 
 def serializeProduct(product):
     return InfoProductSerializer(data={
@@ -33,10 +34,40 @@ def serializeProduct(product):
         'userId' : 'admin'
     })
 
+#ENUM TYPE DE TRANSACTIONS
+class TransactionType(Enum):
+    Perte = 1
+    Achat = 2
+    Vente = 3
+
+def serializeTransaction(product):
+    if(int(product['inputQuantity']) >= TransactionType.Perte.value):
+        
+        serializer = InfotransactionSerializer(data={            
+            'tig_id': str(product['id']),
+            'type' : product['typeTransaction'],
+            'name' : product['name'],
+            'category' : product['category'],
+            'price' : product['sellPrice'],
+            'sale': product['sale'],
+            'quantity' : product['inputQuantity'],
+            'stock' : product['quantity_stock'],
+            'userId' : 'admin'
+        })
+        if serializer.is_valid():
+            serializer.save()
+            print("SUCCESS ==> Transaction serialized successfully")
+            return True
+        else:
+            print("ERROR ==> Transaction serialization failed", serializer.error_messages)
+            return False
+
+
 class UpdateProduct(APIView):
     def post(self, request, format=None):
         jsonData = request.data
         serializer = serializeProduct(jsonData)
+        serializeTransaction(jsonData)
         lineBefore = InfoProduct.objects.get(tig_id=jsonData['id'])
         lineBefore.delete()
         if serializer.is_valid():
@@ -54,6 +85,7 @@ class GlobalUpdateProduct(APIView):
         error = []
         for product in jsonData:
             serializer = serializeProduct(product)
+            serializeTransaction(jsonData)
             lineBefore = InfoProduct.objects.get(tig_id=product['id'])
             lineBefore.delete()
             if serializer.is_valid():
