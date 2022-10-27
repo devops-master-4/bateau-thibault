@@ -1,3 +1,5 @@
 django-cors-headers
 pyJWT
-django djangorestframework requests
+django
+djangorestframework
+request
