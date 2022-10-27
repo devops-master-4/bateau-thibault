@@ -67,3 +67,7 @@ server/TME_webAPI_DBO/mySearchEngine/mytig/migrations/__pycache__/0006_productof
 client/package-lock.json
 client/package-lock.json
 /__pycache__
+__pycache__/
+
+#ignore __pycache__ files
+__pycache__/
