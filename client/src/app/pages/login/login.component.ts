@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -8,25 +9,39 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private router:Router) { }
+  constructor(private router:Router, private loginService: LoginService) { }
 
   ngOnInit(): void {
   }
 
   login(){
+    const emailRegex = new RegExp("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")
+    const passwordRegex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
     const email = document.getElementById('inputEmail') as HTMLInputElement;
     const password = document.getElementById('inputPassword') as HTMLInputElement;
     console.log(email.value);
     console.log(password.value);
+    /*
     if(!email.value || !password.value){
       alert('Veuillez remplir tous les champs');
     }
+    else if(!emailRegex.test(email.value)){
+      alert('Veuillez entrer une adresse mail valide')
+    }
+    else if(!passwordRegex.test(password.value)){
+      alert('Votre mot de passe doit contenir au moins 8 caractères dont une lettre minuscule, une lettre majuscule, un chiffre et un caractère spécial.');
+    }
     else{
       //Si la connection est valide
-      this.router.navigate(["/home"])
-    }
-    
-    
+      this.loginVerification(email.value, password.value);
+    }*/
+  }
+
+  loginVerification(email : string, password : string){
+    this.router.navigate(["/home"]);
+    this.loginService.isConnected = true;
+    this.loginService.password = password;
+    this.loginService.email = email;
   }
 
 }
