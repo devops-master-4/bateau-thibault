@@ -1,10 +1,10 @@
 from django.db import models
 
-# class User(AbstractUser):
-#     name = models.CharField(max_length=255)
-#     email = models.CharField(max_length=255, unique=True)
-#     password = models.CharField(max_length=255)
-#     username = None
+class AccountInfo(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    tig_id = models.IntegerField(default='-1')
+    username = models.CharField(max_length=100, blank=True, default='')
+    password = models.CharField(max_length=100, blank=True, default='')
 
-#     USERNAME_FIELD = 'email'
-#     REQUIRED_FIELDS = []
+    class Meta:
+        ordering = ('username',)
