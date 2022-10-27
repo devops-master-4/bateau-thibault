@@ -183,7 +183,7 @@ export class DetailsProduitsComponent implements OnInit {
 
     this.updateProductService.update(data,'http://localhost:8000/updateProduct/').subscribe( res=> {
 
-       if(res==='Succes'){
+       if(res=='Succes'){
          this.responseRequest = 'Mis à jour avec succès';
        }
        else{
@@ -191,6 +191,7 @@ export class DetailsProduitsComponent implements OnInit {
        }
 
        $event.target.nextElementSibling.classList.remove('hide');
+
        setTimeout(() =>{
          $event.target.nextElementSibling.classList.add('hide');
          window.location.href =  window.location.href;
