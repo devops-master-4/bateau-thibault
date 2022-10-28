@@ -59,7 +59,7 @@
 
             <div class="col-md-4 col-lg-4 col-s-12 col-sm-12">
               <label>appliquer promotion</label>
-              <input type="text" id="promotion{{product.id}}" (change)="onApplyPromo(product,$event)" value="" min="0">
+              <input type="text" id="promotion{{product.id}}" (change)="onApplyPromo(product,$event)" value="{{product.discount}}" min="0">
               <p class="errorReason hide" style="color: red">Error valeur incorrecte</p>
             </div>
           </div>

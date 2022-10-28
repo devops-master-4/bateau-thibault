@@ -72,6 +72,7 @@ class getTaxes(APIView):
                     res.append([prod.sellPrice * prod.quantity, prod.date.date()])
 
         for elem in res:
+            print(elem[0])
             elem[0] = 0 if elem[0] < 0 else (30 * elem[0]) / 100
 
         return JsonResponse(res, safe=False)
@@ -82,17 +83,16 @@ class getStock(APIView):
         for prod in InfoTransaction.objects.all():
             isIn = False
             for elem in res:
-                if(elem[0] == prod.tig_id and elem[3].date() == prod.date.date() and prod.date > elem[3]):
-                    elem[3] = prod.date
-                    elem[2] = prod.stock
+                if(elem[0] == prod.tig_id and elem[5].date() == prod.date.date() and prod.date > elem[5]):
+                    elem[5] = prod.date
+                    elem[4] = prod.stock
                     isIn = True
                     break
             if(not isIn):
-                if(prod.type == TransactionType.Achat.value):
                     res.append([prod.tig_id, prod.name, prod.category, prod.sale, prod.stock, prod.date])
 
         for elem in res:
-            elem[3] = elem[3].date()
+            elem[5] = elem[5].date()
 
         return JsonResponse(res, safe=False)
 
@@ -109,7 +109,6 @@ class getPrice(APIView):
                     isIn = True
                     break
             if(not isIn):
-                if(prod.type == TransactionType.Achat.value):
                     res.append([prod.tig_id, prod.name, prod.category, prod.sale, prod.sellPrice, prod.date])
 
         for elem in res:
