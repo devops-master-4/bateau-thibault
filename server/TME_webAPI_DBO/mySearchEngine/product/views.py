@@ -41,8 +41,8 @@ class TransactionType(Enum):
     Vente = 3
 
 def serializeTransaction(product):
-    if(int(product['inputQuantity']) >= TransactionType.Perte.value):
-        
+    if(int(product['typeTransaction']) >= TransactionType.Perte.value and int(product['inputQuantity'] > 0)):
+            
         serializer = InfotransactionSerializer(data={            
             'tig_id': str(product['id']),
             'type' : product['typeTransaction'],
@@ -82,11 +82,10 @@ class UpdateProduct(APIView):
 class GlobalUpdateProduct(APIView):
     def post(self, request, format=None):
         jsonData = request.data
-        print(jsonData)
         error = []
         for product in jsonData:
             serializer = serializeProduct(product)
-            serializeTransaction(jsonData)
+            serializeTransaction(product)
             lineBefore = InfoProduct.objects.get(tig_id=product['id'])
             lineBefore.delete()
             if serializer.is_valid():
