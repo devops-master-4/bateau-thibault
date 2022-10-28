@@ -71,3 +71,4 @@ __pycache__/
 
 #ignore __pycache__ files
 __pycache__/
+server/TME_webAPI_DBO/mySearchEngine/db.sqlite3
