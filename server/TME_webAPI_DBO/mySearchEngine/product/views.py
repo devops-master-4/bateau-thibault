@@ -41,7 +41,7 @@ class TransactionType(Enum):
     Vente = 3
 
 def serializeTransaction(product):
-    if(int(product['typeTransaction']) >= TransactionType.Perte.value and int(product['quantity'] > 0)):
+    if(int(product['typeTransaction']) >= TransactionType.Perte.value and int(product['inputQuantity'] > 0)):
             
         serializer = InfotransactionSerializer(data={            
             'tig_id': str(product['id']),
