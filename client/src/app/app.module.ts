@@ -9,7 +9,7 @@ import { HeaderComponent } from './features/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FooterComponent } from './features/footer/footer.component';
 import { DetailsProduitsComponent } from './pages/details-produits/details-produits.component';
-import { DonneesHistoriqueComponent } from './pages/donnees-historique/donnees-historique.component';
+import { donnesHistoriqueComponent } from './pages/donnees-historique/donnees-historique.component';
 import {ProductService} from './services/product.service';
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
@@ -22,7 +22,7 @@ import {FormsModule} from "@angular/forms";
     HeaderComponent,
     FooterComponent,
     DetailsProduitsComponent,
-    DonneesHistoriqueComponent,
+    donnesHistoriqueComponent,
   ],
   imports: [
     BrowserModule,
