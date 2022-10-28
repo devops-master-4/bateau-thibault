@@ -2,7 +2,6 @@ import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { Product } from "../../interface/product";
 import { ProductService } from "../../services/product.service";
 import { HttpClient } from "@angular/common/http";
-import { HttpHeaders } from '@angular/common/http';
 import { UpdateProductService } from "../../services/update-product.service";
 @Component({
   selector: 'app-details-produits',
@@ -307,7 +306,6 @@ export class DetailsProduitsComponent implements OnInit {
       });
     //update
     console.log(arrayOfProducts);
-    console.log("INit : ", initializeUpdate);
     if(initializeUpdate){
       this.spinner=true;
       this.updateProductService.update(arrayOfProducts,'http://localhost:8000/updateMultipleProduct/').subscribe( res=> {
@@ -327,6 +325,7 @@ export class DetailsProduitsComponent implements OnInit {
         },
         error =>{
           console.log("erreur : ",error)
+            this.spinner=false;
             $event.target.nextElementSibling.classList.remove('hide');
             this.messageGlobalUpdate = 'Erreur lors de la mise jour';
         });;
