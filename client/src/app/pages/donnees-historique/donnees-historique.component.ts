@@ -211,7 +211,8 @@ export class donnesHistoriqueComponent implements OnInit {
             ],
             backgroundColor: [
               'rgba(153, 102, 255, 0.2)',
-            ],
+            ], 
+            
             borderColor: ['rgba(255, 99, 132, 1)'],
           },
         ],
