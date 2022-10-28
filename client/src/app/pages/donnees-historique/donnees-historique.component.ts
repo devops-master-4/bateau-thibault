@@ -190,7 +190,14 @@ export class donnesHistoriqueComponent implements OnInit {
 
     let priceImpot = JSON.parse(localStorage.getItem('priceImpot') || '{}');
     const labelImpot = JSON.parse(localStorage.getItem('labelImpot') || '{}');
-    (priceImpot == 0) ? priceImpot = 100 : priceImpot = priceImpot;
+    
+    // make sum of all impot
+    let sum = 0;
+    for (let i = 0; i < priceImpot.length; i++) {
+      sum += priceImpot[i];
+    }
+    const impotArray = [sum];
+
     console.log('priceImpot', priceImpot);
     this.chart3 = new Chart('MyChart3', {
       type: 'doughnut',
@@ -200,7 +207,7 @@ export class donnesHistoriqueComponent implements OnInit {
           {
             label: labelImpot,
             data: [
-              priceImpot,
+              impotArray[0],
             ],
             backgroundColor: [
               'rgba(153, 102, 255, 0.2)',
