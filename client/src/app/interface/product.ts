@@ -1,14 +1,17 @@
 export interface Product {
-  comments : string;
-  category: number;
-  id:number;
-  price:number;
-  sellPrice:number;
-  discount:number;
-  sale:boolean
-  owner:string;
-  unit:number;
+  tig_id:number;
   name:string;
+  category: number;
+  price:number;
+  unit:number;
+  availability : boolean;
+  sale:boolean
+  discount:number;
+  comments : string;
   quantity_stock:number;
   quantity_sold:number;
+  id:number;
+  sellPrice:number;
+  owner:string;
+  userId:string;
 }

@@ -16,6 +16,7 @@ export class DetailsProduitsComponent implements OnInit {
   categorieName:string ='Tout les produits de la mer';
   success:string ='';
   spinner:boolean = true;
+  responseRequest='';
 
 
   constructor(public productService : ProductService, private elRef:ElementRef, private http:HttpClient, private updateProductService: UpdateProductService) {
@@ -64,14 +65,15 @@ export class DetailsProduitsComponent implements OnInit {
   }
 
   changePrice(product: Product, $event: any) {
-    if(product.sellPrice >= product.price){
-      if($event.target.class.includes('plus')){
-        product.sellPrice++;
+    console.log('changePrice',product.sellPrice);
+
+      if($event.target.getAttribute('class').includes('plus')){
+        product.sellPrice+=0.5;
       }
       else{
-        product.sellPrice--;
+        product.sellPrice-=0.5;
       }
-    }
+      if(product.sellPrice <= product.price){product.sellPrice = product.price; }
   }
 
   onChangeQuantity(product: Product,$event:any) {
@@ -96,7 +98,6 @@ export class DetailsProduitsComponent implements OnInit {
     return true;
   }
 
-
   onApplyPromo(product: Product,$event:any){
 
     if(!this.checkErreurOnInput($event.target.value,$event.target.id)){
@@ -119,50 +120,88 @@ export class DetailsProduitsComponent implements OnInit {
 
   }
 
-  updateProduct(product: Product) {
+  updateProduct(product: Product, $event:any) {
+    var typeTransaction:number |string = 0;
+    
 
     const selecteurVente = this.elRef.nativeElement.querySelector(`#vente${product.id}`);
     let optionVente = this.getSelectedValue(selecteurVente);
 
     let inputAjout = this.elRef.nativeElement.querySelector(`#ajout${product.id}`).value;
-    let inputRetrait = this.elRef.nativeElement.querySelector(`#retrait${product.id}`).value;
     let inputPromotion = this.elRef.nativeElement.querySelector(`#promotion${product.id}`).value;
 
-    if (inputRetrait > 0 && optionVente == undefined) {
+    if (inputAjout >0 && optionVente == undefined) {
       selecteurVente.nextElementSibling.classList.remove('hide');
 
       setTimeout(() => {
         selecteurVente.nextElementSibling.classList.add('hide');
       }, 2000);
-
+      
       return;
     }
 
-    //check if all input equals 0 or promotion >0 return void
-    if ((parseInt(inputAjout) == 0 && parseInt(inputRetrait) == 0 && (parseInt(inputPromotion) == 0 || parseInt(inputPromotion) > 100))) {
-      return;
+  switch(optionVente) {
+    case 1:
+      typeTransaction = 1;
+      product.quantity_stock -= parseInt(inputAjout)
+      break;
+      case 2:
+        typeTransaction = 2;
+        product.quantity_stock += parseInt(inputAjout)
+        break;
+    case 3 :
+      typeTransaction = 3;
+      product.quantity_stock -= parseInt(inputAjout)
+      break;
+
+    default:
+      typeTransaction = 0;
+  }
+
+    if(inputPromotion !=='' && product.sellPrice>product.price){
+      product.discount = parseInt(inputPromotion);
     }
 
-
-    product.quantity_stock -= parseInt(inputRetrait);
-    product.quantity_stock += parseInt(inputAjout);
-
-
-    if (product.quantity_sold != 0) {
-      product.quantity_sold += parseInt(inputRetrait);
+    const data = {
+      id:product.tig_id,
+      name:product.name,
+      category: product.category,
+      price:product.price,
+      unit:product.unit,
+      availability : product.availability,
+      sale: product.sale,
+      discount:product.discount,
+      comments : product.comments,
+      quantity_stock:product.quantity_stock,
+      quantity_sold:product.quantity_sold,
+      sellPrice:product.sellPrice,
+      typeTransaction:typeTransaction,
+      userId:product.userId,
+      inputQuantity: parseInt(inputAjout)
     }
-    if (product.quantity_stock <= 0) {
-      product.quantity_stock = 0;
-    }
 
-
-
-
-    const data:Product = product;
+    console.log(data);
 
     //update stock quantity
+    this.updateProductService.update(data,'http://localhost:8000/updateProduct/').subscribe( res=> {
 
-    //this.updateProductService.update(data,'http://51.255.166.155:1352/tig/products/');
+       if(res=='Succes'){
+         this.responseRequest = 'Mis à jour avec succès';
+       }
+       else{
+         this.responseRequest = 'Erreur lors de la mise jour';
+       }
+
+       $event.target.nextElementSibling.classList.remove('hide');
+
+       setTimeout(() =>{
+         $event.target.nextElementSibling.classList.add('hide');
+         //window.location.href =  window.location.href;
+       },1000)
+    },
+    error =>{
+      console.log("erreur : ",error)
+    });;
 
   }
 
