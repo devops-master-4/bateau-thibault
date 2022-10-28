@@ -6,7 +6,7 @@ import {donnesHistoriqueComponent} from "./pages/donnees-historique/donnees-hist
 import { LoginComponent } from './pages/login/login.component';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent,},
+  { path: '', component: HomeComponent},
   { path: 'home', component:HomeComponent},
   { path: 'detailsProduit', component:DetailsProduitsComponent},
   { path: 'donnesHistorique', component:donnesHistoriqueComponent},
