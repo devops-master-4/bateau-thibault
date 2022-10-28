@@ -1,0 +1,19 @@
+2022-10-28 10:51:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "SQLITE_MASTER" non trouvée
+Table "SQLITE_MASTER" not found; SQL statement:
+SELECT
+    *
+FROM
+    SQLITE_MASTER
+WHERE
+    TBL_NAME LIKE '%'
+    AND TYPE = 'index'
+    AND SQL NOT NULL
+ORDER BY NAME [42102-199]
+2022-10-28 10:51:03 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "SQLITE_MASTER" non trouvée
+Table "SQLITE_MASTER" not found; SQL statement:
+SELECT * FROM SQLITE_MASTER WHERE
+    TBL_NAME LIKE '%'
+    AND TYPE = 'trigger' AND name LIKE '%'
+ORDER BY NAME [42102-199]
