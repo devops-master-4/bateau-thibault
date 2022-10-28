@@ -18,6 +18,32 @@ export class donnesHistoriqueComponent implements OnInit {
   public chart2: any;
   public chart3: any;
 
+  changeChart($event: any) {
+    console.log($event.target.value);
+
+    switch ($event.target.value) {
+      case 'MyChart':
+        // remove class hide 
+        document.getElementById('MyChart')?.classList.remove('hide');
+        document.getElementById('MyChart2')?.classList.add('hide');
+        document.getElementById('MyChart3')?.classList.add('hide');
+        break;
+      case 'MyChart2':
+        document.getElementById('MyChart2')?.classList.remove('hide');
+        document.getElementById('MyChart')?.classList.add('hide');
+        document.getElementById('MyChart3')?.classList.add('hide');
+        break;
+      case 'MyChart3':
+        document.getElementById('MyChart3')?.classList.remove('hide');
+        document.getElementById('MyChart2')?.classList.add('hide');
+        document.getElementById('MyChart')?.classList.add('hide');
+        break;
+      default:
+        break;
+    }
+  }
+
+
   createChart() {
     // get data from database
     var dataSets: any = [];

@@ -1,25 +1,37 @@
 <app-header></app-header>
-<div class="container" >
+
+<!--
+
+  make a select option with the list of diffrent id=MyChart 
+  and a button to display the chart
+
+ -->
+
+ <select
+ 
+ (change)="changeChart
+ ($event)"
+ >
+  <option value="MyChart"  >MyChart</option>
+  <option value="MyChart2" >MyChart2</option>
+  <option value="MyChart3" >MyChart3</option>
+ </select>
+
+
+<div class="container">
   <div class="chart-container p-2">
-    <canvas  id="MyChart" >{{ chart }}</canvas>
+    <canvas id="MyChart">{{ chart }}</canvas>
   </div>
-
-
-  
 </div>
 
-<div class="container" >
+<div class="container">
   <div class="chart-container p-2">
-    <canvas  id="MyChart2" >{{ chart2 }}</canvas>
+    <canvas id="MyChart2">{{ chart2 }}</canvas>
   </div>
 
-
-<div class="container" >
-  <div class="chart-container p-2">
-    <canvas  id="MyChart3" >{{ chart3 }}</canvas>
+  <div class="container">
+    <div class="chart-container p-2">
+      <canvas id="MyChart3">{{ chart3 }}</canvas>
+    </div>
   </div>
-
-
-  
 </div>
-
