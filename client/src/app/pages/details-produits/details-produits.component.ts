@@ -129,9 +129,8 @@ export class DetailsProduitsComponent implements OnInit {
     },2000);
   }
 
-
-  updateProduct(product: Product, $event: any) {
-
+  //create data model for product to update if  error return null
+  getProduct(product: Product, $event:any): object | null{
     const selecteurVente = this.elRef.nativeElement.querySelector(`#vente${product.id}`);
     let typeTransaction : string | number = this.getSelectedValue(selecteurVente);
 
@@ -141,20 +140,20 @@ export class DetailsProduitsComponent implements OnInit {
     console.log(inputAjout.value, typeTransaction);
     if (parseInt(inputAjout.value) > 0 && typeTransaction == 0) {
       this.toggleMessageError(selecteurVente)
-      return;
+      return null;
     }
-    console.log(inputAjout)
+
 
     if(!this.checkErreurOnInput(inputAjout.value,'ajout')){
       this.toggleMessageError(inputAjout);
-      return;
+      return null;
     }
 
     if(this.checkErreurOnInput(inputPromotion.value,'promotion')){
       if( (product.sellPrice * (1-parseInt(inputPromotion.value)/100)) < product.price){
         this.toggleMessageError($event.target);
         this.responseRequest = 'Erreur promotion : le prix ne peut pas etre inférieur au prix d\'achat';
-        return;
+        return null;
       }
       product.discount = parseInt(inputPromotion.value);
     }
@@ -181,7 +180,7 @@ export class DetailsProduitsComponent implements OnInit {
       this.toggleMessageError($event.target);
       this.responseRequest = "Erreur stock";
       product.quantity_stock += parseInt(inputAjout.value)
-      return;
+      return null;
     }
 
     const data = {
@@ -202,7 +201,17 @@ export class DetailsProduitsComponent implements OnInit {
       inputQuantity: parseInt(inputAjout.value)
     }
 
-    console.log(data);
+    return data;
+
+  }
+
+  updateProduct(product: Product, $event: any) {
+
+   var data = this.getProduct(product, $event);
+
+   if(data == null){
+     return;
+   }
 
     //update stock quantity
     this.updateProductService.update(data, 'http://localhost:8000/updateProduct/').subscribe(res => {
@@ -223,7 +232,7 @@ export class DetailsProduitsComponent implements OnInit {
     },
       error => {
         console.log("erreur : ", error)
-      });;
+      });
 
   }
 
@@ -232,83 +241,20 @@ export class DetailsProduitsComponent implements OnInit {
   globalUpdate($event:any){
 
     var arrayOfProducts:any= [];
-    var initializeUpdate=true;
 
     this.listProduits.forEach(product => {
-      const selecteurVente = this.elRef.nativeElement.querySelector(`#vente${product.id}`);
-      var typeTransaction:number |string =  this.getSelectedValue(selecteurVente);
 
-      let inputAjout = this.elRef.nativeElement.querySelector(`#ajout${product.id}`);
-      let inputPromotion = this.elRef.nativeElement.querySelector(`#promotion${product.id}`);
+        var data = this.getProduct(product, $event);
 
-        //invalid inputs return
-        if( !this.checkErreurOnInput(inputAjout.value, 'ajout') || !this.checkErreurOnInput(inputAjout.value, 'promotion')){
-          this.toggleMessageError($event.target);
-          this.messageGlobalUpdate = 'Erreur :  valeurs incorrects';
-          initializeUpdate=false;
-          return;
+        if(data != null){
+          arrayOfProducts.push(data);
         }
+    });
 
-      if (parseInt(inputAjout.value) > 0 && typeTransaction == 0) {
-        this.toggleMessageError($event.target);
-        this.messageGlobalUpdate = 'Erreur :  le motif de modification de stock ne peut pas être vide';
-        initializeUpdate=false;
-        return;
-      }
-
-
-      if(this.checkErreurOnInput(inputPromotion.value,'promotion')){
-        if( (product.sellPrice * (1-parseInt(inputPromotion.value)/100)) < product.price){
-          this.toggleMessageError($event.target);
-          initializeUpdate=false;
-          return;
-        }
-        product.discount = parseInt(inputPromotion.value);
-      }
-
-      switch(typeTransaction) {
-        case 1:
-          product.quantity_stock -= parseInt(inputAjout.value)
-          break;
-        case 2:
-          product.quantity_stock += parseInt(inputAjout.value)
-          break;
-        case 3 :
-          product.quantity_stock -= parseInt(inputAjout.value)
-          break;
-      }
-
-      if(product.quantity_stock <0){
-        this.toggleMessageError(inputAjout);
-        setTimeout(() =>{
-          product.quantity_stock +=parseInt(inputAjout.value);
-        },2000);
-        initializeUpdate=false;
-        return;
-      }
-
-        arrayOfProducts.push({
-          id:product.tig_id,
-          name:product.name,
-          category: product.category,
-          price:product.price,
-          unit:product.unit,
-          availability : product.availability,
-          sale: product.sale,
-          discount:product.discount,
-          comments : product.comments,
-          quantity_stock:product.quantity_stock,
-          quantity_sold:product.quantity_sold,
-          sellPrice:product.sellPrice,
-          typeTransaction:typeTransaction,
-          userId:product.userId,
-          inputQuantity: parseInt(inputAjout.value)
-        })
-      });
     //update
     console.log(arrayOfProducts);
-    console.log("INit : ", initializeUpdate);
-    if(initializeUpdate){
+
+    if(arrayOfProducts.length > 0){
       this.spinner=true;
       this.updateProductService.update(arrayOfProducts,'http://localhost:8000/updateMultipleProduct/').subscribe( res=> {
           console.log('sending data');
